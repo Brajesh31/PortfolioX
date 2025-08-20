@@ -1,36 +1,35 @@
-name: Deploy Portfolio to Subdomain
+name: Deploy to Hostinger FTP
 
 on:
   push:
     branches:
-      - main
+      - main  # Change to your deployment branch if different
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: 🧰 Set up Node
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-            node-version: 18
-          
+          node-version: '18'  # Use your Node.js version
 
-      - name: 📦 Install dependencies
-        run: npm install --force
+      - name: Install dependencies
+        run: npm install
 
-      - name: 🏗️ Build project
+      - name: Run build
         run: npm run build
 
-      - name: FTP Upload
+      - name: Deploy dist folder via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.FTP_HOST }}
+          server: 157.173.208.175
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: /brajesh1
           port: 21
-          local-dir: ./              # your project root
-          server-dir: /public_html/brajesh4/
