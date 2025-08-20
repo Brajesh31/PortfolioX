@@ -20,5 +20,5 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
-          local-dir: ./              # your project root
-          server-dir: ${{ secrets.FTP_PATH }}  # /public_html/brajesh4
+          local-dir: ./dist              # your project root
+          server-dir: /public_html/brajesh4
