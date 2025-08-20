@@ -1,4 +1,4 @@
-name: 🚀 Auto Deploy to Hostinger
+name: 🚀 Deploy to Hostinger FTP
 
 on:
   push:
@@ -6,29 +6,24 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  ftp-deploy:
+    name: Upload via FTP
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout code
+      - name: 📥 Checkout Code
         uses: actions/checkout@v3
 
-      - name: 🧰 Set up Node
-        uses: actions/setup-node@v3
+      - name: 🏗️ Build Vite Project
+        run: |
+          npm install
+          npm run build
+
+      - name: 🚀 FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
-          node-version: 18
-
-      - name: 📦 Install dependencies
-        run: npm install
-
-      - name: 🏗️ Build project
-        run: npm run build
-
-      - name: 🚀 Upload to Hostinger via FTP
-        uses: samkirkland/ftp-deploy-action@v4.3.4
-        with:
-          server: 157.173.208.175
-          username: u288920822
-          password: Bk@31012004
-          server-dir: domains/edtech-community.com/public_html/brajesh4
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/
+          server-dir: /domains/edtech-community.com/public_html/brajesh4
